@@ -13,50 +13,38 @@ const transactionRouter = Router();
 const upload = multer(uploadConfig);
 
 transactionRouter.get('/', async (request, response) => {
-  try {
-    const transactionsRepository = getCustomRepository(TransactionsRepository);
+  const transactionsRepository = getCustomRepository(TransactionsRepository);
 
-    const transactions = await transactionsRepository.find();
-    const balance = await transactionsRepository.getBalance();
+  const transactions = await transactionsRepository.find();
+  const balance = await transactionsRepository.getBalance();
 
-    return response.json({ transactions, balance });
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json({ transactions, balance });
 });
 
 transactionRouter.post('/', async (request, response) => {
-  try {
-    const { title, value, type, category } = request.body;
+  const { title, value, type, category } = request.body;
 
-    const createTransaction = new CreateTransactionService();
+  const createTransaction = new CreateTransactionService();
 
-    const transaction = await createTransaction.execute({
-      title,
-      value,
-      type,
-      category,
-    });
+  const transaction = await createTransaction.execute({
+    title,
+    value,
+    type,
+    category,
+  });
 
-    return response.json(transaction);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
-  }
+  return response.json(transaction);
 });
 
 transactionRouter.post(
   '/import',
   upload.single('file'),
   async (request, response) => {
-    try {
-      const importTransaction = new ImportTransactionService();
+    const importTransaction = new ImportTransactionService();
 
-      const transaction = await importTransaction.execute(request.file.path);
+    const transaction = await importTransaction.execute(request.file.path);
 
-      return response.json(transaction);
-    } catch (err) {
-      return response.status(400).json({ error: err.message });
-    }
+    return response.json(transaction);
   },
 );
 
