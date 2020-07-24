@@ -12,7 +12,7 @@ interface Request {
   category: string;
 }
 
-class CrateTransactionService {
+class CreateTransactionService {
   public async execute({
     title,
     value,
@@ -54,4 +54,4 @@ class CrateTransactionService {
   }
 }
 
-export default CrateTransactionService;
+export default CreateTransactionService;
