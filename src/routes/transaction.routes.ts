@@ -7,6 +7,7 @@ import TransactionsRepository from '../repositories/TransactionsRepository';
 
 import CreateTransactionService from '../services/CreateTransactionService';
 import ImportTransactionService from '../services/ImportTransactionService';
+import DeleteTransactionService from '../services/DeleteTransactionService';
 
 const transactionRouter = Router();
 const upload = multer(uploadConfig);
@@ -58,5 +59,15 @@ transactionRouter.post(
     }
   },
 );
+
+transactionRouter.delete('/:id', async (request, response) => {
+  const { id } = request.params;
+
+  const deleteTransaction = new DeleteTransactionService();
+
+  await deleteTransaction.execute(id);
+
+  return response.status(204).send();
+});
 
 export default transactionRouter;
